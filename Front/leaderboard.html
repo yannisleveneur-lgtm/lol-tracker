@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Stats - Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="header-container">
+            <h1 class="logo">NYJ LOL STATS</h1>
+            <div class="header-actions">
+                <nav class="navbar">
+                    <a href="index.html" class="nav-item">Accueil</a>
+                    <a href="leaderboard.html" class="nav-item active">Leaderboard</a>
+                    <a href="champions.html" class="nav-item">Champions</a>
+                </nav>
+                <div class="auth-nav" data-auth-nav></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="leaderboard-page-container">
+            <div id="data-status" class="data-status" role="status" hidden></div>
+            
+            <div class="dashboard-card leaderboard-full-card">
+                
+                <div class="leaderboard-header">
+                    <div>
+                        <h2>Classement régional</h2>
+                        <span class="source-badge" id="full-leaderboard-source">Chargement</span>
+                    </div>
+                    
+                    <div class="region-tabs" id="full-region-tabs">
+                        <button class="tab active" data-region="EUW">EUW</button>
+                        <button class="tab" data-region="KR">KR</button>
+                        <button class="tab" data-region="NA">NA</button>
+                        <button class="tab" data-region="EUNE">EUNE</button>
+                        <button class="tab" data-region="JP">JP</button>
+                        <button class="tab" data-region="BR">BR</button>
+                        <button class="tab" data-region="LAN">LAN</button>
+                    </div>
+                </div>
+
+                <table class="data-table full-table">
+                    <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Joueur</th>
+                            <th>Région</th>
+                            <th>Ligue</th>
+                            <th>LP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="full-leaderboard-body"></tbody>
+                </table>
+
+            </div>
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 NYJ LoL Stats - Projet Universitaire de Fin d'Année</p>
+            <p class="footer-team">Développé avec passion par l'équipe NYJ</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Stats - Tracker Esport</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="header-container">
+            <h1 class="logo">NYJ LOL STATS</h1>
+            <div class="header-actions">
+                <nav class="navbar">
+                    <a href="index.html" class="nav-item active">Accueil</a>
+                    <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+                    <a href="champions.html" class="nav-item">Champions</a>
+                </nav>
+                <div class="auth-nav" data-auth-nav></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <form id="search-form" class="modern-dark-search">
+                <select id="region" name="region">
+                    <option value="EUW">EUW</option>
+                    <option value="KR">KR</option>
+                    <option value="NA">NA</option>
+                    <option value="EUNE">EUNE</option>
+                    <option value="JP">JP</option>
+                    <option value="BR">BR</option>
+                    <option value="LAN">LAN</option>
+                </select>
+                <div class="divider"></div>
+                <span class="search-icon" aria-hidden="true">&#128269;</span>
+                <input type="text" id="summoner-name" placeholder="Nom du joueur ou Nom#Tag" required autocomplete="off">
+                <button type="submit" style="display: none;"></button>
+            </form>
+            <p class="search-help">Exemple : Faker#KR1. La région sélectionnée est transmise au profil.</p>
+        </div>
+
+        <section class="dashboard-grid">
+            
+            <article class="dashboard-card tierlist-card">
+                <h3>
+                    Winrate des champions
+                    <span class="source-badge" id="champions-home-source">Chargement</span>
+                </h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Champion</th>
+                            <th>Tier</th>
+                            <th>Winrate</th>
+                            <th>Matchs</th>
+                        </tr>
+                    </thead>
+                    <tbody id="champion-tierlist-body"></tbody>
+                </table>
+            </article>
+
+            <article class="dashboard-card leaderboard-card">
+                <div class="card-topline">
+                    <h3>Classement régional</h3>
+                    <span class="source-badge" id="leaderboard-source">Chargement</span>
+                </div>
+                <div class="region-tabs" id="home-region-tabs">
+                    <button class="tab active" data-region="EUW">EUW</button>
+                    <button class="tab" data-region="KR">KR</button>
+                    <button class="tab" data-region="NA">NA</button>
+                    <button class="tab" data-region="EUNE">EUNE</button>
+                    <button class="tab" data-region="JP">JP</button>
+                    <button class="tab" data-region="BR">BR</button>
+                    <button class="tab" data-region="LAN">LAN</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Joueur</th>
+                            <th>Tier</th>
+                            <th>LP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="player-leaderboard-body"></tbody>
+                </table>
+            </article>
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 NYJ LoL Stats - Projet Universitaire de Fin d'Année</p>
+            <p class="footer-team">Développé avec passion par l'équipe NYJ</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

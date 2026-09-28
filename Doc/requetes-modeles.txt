@@ -1,0 +1,74 @@
+=====================================================================
+PARTIE 1 : REQUÊTES SQL DE RÉFÉRENCE (MySQL) - 100% VALIDE
+=====================================================================
+
+1. Connexion et profil utilisateur (Vérification de l'email) :
+SELECT id_utilisateur, pseudo_site, mot_de_passe 
+FROM utilisateurs 
+WHERE email = 'jonathan@ecole.fr';
+
+
+2. Page d'accueil : Top Players par continent (Filtre par région, ex: 'EUW') :
+SELECT i.game_name, i.tag_line, i.icone_id, i.solo_rang, i.solo_division, i.solo_lp 
+FROM invocateurs i
+INNER JOIN regions r ON i.id_region = r.id_region
+WHERE r.nom_region = 'EUW'
+ORDER BY i.solo_lp DESC
+LIMIT 10;
+
+
+3. Requête complexe réglementaire (4 jointures, 1 CTE, GROUP BY + HAVING) :
+WITH RegionsActives AS (
+    SELECT id_region, nom_region FROM regions WHERE statut = 'actif'
+)
+SELECT 
+    u.pseudo_site,
+    reg.nom_region,
+    COUNT(f.id_favori) AS total_joueurs_suivis,
+    AVG(i.solo_lp) AS niveau_moyen_lp
+FROM utilisateurs u
+INNER JOIN groupes g ON u.id_groupe = g.id_groupe
+INNER JOIN favoris f ON u.id_utilisateur = f.id_utilisateur
+INNER JOIN invocateurs i ON f.invocateur_puuid = i.puuid
+INNER JOIN RegionsActives reg ON i.id_region = reg.id_region
+WHERE g.nom_groupe = 'Premium'
+GROUP BY u.pseudo_site, reg.nom_region
+HAVING COUNT(f.id_favori) >= 1;
+
+
+=====================================================================
+PARTIE 2 : REQUÊTES NOSQL DE RÉFÉRENCE (MongoDB) - 100% VALIDE
+=====================================================================
+
+1. Insertion d'un match (Historique brut de l'API Riot avec résultat win/loss) :
+db.matchs.insertOne({
+  "matchId": "EUW1_123456789",
+  "gameCreation": 1716032400,
+  "gameDuration": 1820,
+  "gameMode": "CLASSIC",
+  "participants": [
+    { "puuid": "puuid_faker", "championName": "Azir", "kills": 9, "deaths": 1, "assists": 8, "win": true }
+  ]
+});
+
+
+2. Page du joueur : Charger l'historique des matchs du plus récent au plus ancien :
+db.matchs.find({ "participants.puuid": "puuid_faker" }).sort({ "gameCreation": -1 });
+
+
+3. Page d'accueil : Framework d'agrégation (Calcul dynamique du Winrate par Champion) :
+db.matchs.aggregate([
+  { $unwind: "$participants" },
+  { $group: {
+      _id: "$participants.championName",
+      totalMatchs: { $sum: 1 },
+      totalVictoires: { $sum: { $cond: [ "$participants.win", 1, 0 ] } }
+    }
+  },
+  { $project: {
+      champion: "$_id",
+      winrate: { $multiply: [ { $divide: [ "$totalVictoires", "$totalMatchs" ] }, 100 ] }
+    }
+  },
+  { $sort: { totalMatchs: -1 } }
+]);

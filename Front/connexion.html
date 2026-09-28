@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Stats - Connexion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1 class="logo">NYJ LOL STATS</h1>
+            <div class="header-actions">
+                <nav class="navbar">
+                    <a href="index.html" class="nav-item">Accueil</a>
+                    <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+                    <a href="champions.html" class="nav-item">Champions</a>
+                </nav>
+                <div class="auth-nav" data-auth-nav></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <section class="auth-shell">
+            <div class="auth-intro">
+                <span class="auth-eyebrow">Espace membre</span>
+                <h2>Retrouvez vos joueurs favoris</h2>
+                <p>
+                    Connectez-vous pour conserver vos favoris, retrouver vos recherches
+                    et personnaliser votre suivi des classements.
+                </p>
+
+                <ul class="auth-benefits">
+                    <li>Jusqu'à 10 invocateurs favoris</li>
+                    <li>Accès rapide à leurs profils et historiques</li>
+                    <li>Préférences synchronisées avec votre compte</li>
+                </ul>
+
+                <div class="demo-account">
+                    <strong>Compte de démonstration</strong>
+                    <span>Email : jonathan@ecole.fr</span>
+                    <span>Mot de passe : Password123!</span>
+                </div>
+            </div>
+
+            <div class="auth-card">
+                <div class="auth-tabs" id="auth-tabs" role="tablist" aria-label="Authentification">
+                    <button
+                        class="auth-tab active"
+                        id="login-tab"
+                        type="button"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="login-panel"
+                        data-auth-tab="login"
+                    >
+                        Connexion
+                    </button>
+                    <button
+                        class="auth-tab"
+                        id="register-tab"
+                        type="button"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="register-panel"
+                        data-auth-tab="register"
+                    >
+                        Inscription
+                    </button>
+                </div>
+
+                <div id="auth-message" class="auth-message" role="status" hidden></div>
+
+                <section id="account-panel" class="account-panel" hidden>
+                    <div class="account-avatar" data-account-initial>?</div>
+                    <span class="account-kicker">Votre espace NYJ</span>
+                    <h2 data-account-pseudo>Invocateur</h2>
+                    <p data-account-email></p>
+                    <span class="source-badge account-source" data-account-source></span>
+
+                    <div class="account-stats">
+                        <div>
+                            <strong data-favorite-count>0 / 10</strong>
+                            <span>Favoris</span>
+                        </div>
+                        <div>
+                            <strong data-account-group>Standard</strong>
+                            <span>Groupe</span>
+                        </div>
+                        <div>
+                            <strong>Actif</strong>
+                            <span>Compte</span>
+                        </div>
+                    </div>
+
+                    <p class="account-description">
+                        Vos favoris sont synchronisés avec MySQL et limités à dix
+                        invocateurs par le trigger de la base.
+                    </p>
+
+                    <section class="account-favorites">
+                        <div class="account-favorites-heading">
+                            <h3>Mes favoris</h3>
+                            <span>MySQL</span>
+                        </div>
+                        <div id="account-favorites-list"></div>
+                    </section>
+
+                    <div class="account-actions">
+                        <a class="auth-submit account-home-link" href="index.html">Retour à l'accueil</a>
+                        <button class="account-logout" id="account-logout" type="button">Se déconnecter</button>
+                    </div>
+                </section>
+
+                <section id="login-panel" class="auth-panel" role="tabpanel" aria-labelledby="login-tab">
+                    <div class="auth-heading">
+                        <h2>Bon retour</h2>
+                        <p>Connectez-vous à votre espace NYJ.</p>
+                    </div>
+
+                    <form id="login-form" class="auth-form">
+                        <label for="login-email">Adresse email</label>
+                        <input
+                            id="login-email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="vous@exemple.fr"
+                            required
+                        >
+
+                        <label for="login-password">Mot de passe</label>
+                        <div class="password-field">
+                            <input
+                                id="login-password"
+                                name="mot_de_passe"
+                                type="password"
+                                autocomplete="current-password"
+                                minlength="6"
+                                placeholder="Votre mot de passe"
+                                required
+                            >
+                            <button class="password-toggle" type="button" data-password-toggle="login-password">
+                                Afficher
+                            </button>
+                        </div>
+
+                        <div class="auth-form-row">
+                            <label class="check-label">
+                                <input type="checkbox" name="remember">
+                                <span>Se souvenir de moi</span>
+                            </label>
+                            <button class="link-button" type="button" id="forgot-password">
+                                Mot de passe oublié ?
+                            </button>
+                        </div>
+
+                        <button class="auth-submit" type="submit">
+                            <span>Se connecter</span>
+                        </button>
+                    </form>
+                </section>
+
+                <section
+                    id="register-panel"
+                    class="auth-panel"
+                    role="tabpanel"
+                    aria-labelledby="register-tab"
+                    hidden
+                >
+                    <div class="auth-heading">
+                        <h2>Créer un compte</h2>
+                        <p>Quelques informations suffisent pour commencer.</p>
+                    </div>
+
+                    <form id="register-form" class="auth-form">
+                        <label for="register-pseudo">Pseudo</label>
+                        <input
+                            id="register-pseudo"
+                            name="pseudo_site"
+                            type="text"
+                            autocomplete="username"
+                            minlength="3"
+                            maxlength="50"
+                            placeholder="Votre pseudo"
+                            required
+                        >
+
+                        <label for="register-email">Adresse email</label>
+                        <input
+                            id="register-email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="vous@exemple.fr"
+                            required
+                        >
+
+                        <label for="register-password">Mot de passe</label>
+                        <div class="password-field">
+                            <input
+                                id="register-password"
+                                name="mot_de_passe"
+                                type="password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                placeholder="8 caractères minimum"
+                                required
+                            >
+                            <button class="password-toggle" type="button" data-password-toggle="register-password">
+                                Afficher
+                            </button>
+                        </div>
+
+                        <label for="register-confirm-password">Confirmer le mot de passe</label>
+                        <input
+                            id="register-confirm-password"
+                            name="confirm_password"
+                            type="password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            placeholder="Répétez le mot de passe"
+                            required
+                        >
+
+                        <label class="check-label terms-label">
+                            <input type="checkbox" name="terms" required>
+                            <span>J'accepte les conditions d'utilisation du projet.</span>
+                        </label>
+
+                        <button class="auth-submit" type="submit">
+                            <span>Créer mon compte</span>
+                        </button>
+                    </form>
+                </section>
+
+                <p class="auth-technical-note">
+                    Authentification JWT active via l'API Express.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 NYJ LoL Stats - Projet Universitaire de Fin d'Année</p>
+            <p class="footer-team">Développé avec passion par l'équipe NYJ</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

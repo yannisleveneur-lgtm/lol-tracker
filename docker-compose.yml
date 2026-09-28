@@ -1,0 +1,57 @@
+services:
+  backend:
+    build: ./BackEnd
+    ports:
+      - "${API_PORT:-3000}:3000"
+    volumes:
+      - ./BackEnd:/app
+      - /app/node_modules
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+      mongodb_db:
+        condition: service_healthy
+    environment:
+      - PORT=3000
+      - DB_HOST=mysql_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=lol_sql_db
+      - MONGO_URI=mongodb://mongodb_db:27017/lol_nosql_db
+      - JWT_SECRET=${JWT_SECRET}
+    restart: unless-stopped
+
+  mysql_db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lol_sql_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongodb_db:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/01-init-mongo.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  frontend:
+    build: ./Front
+    ports:
+      - "${FRONT_PORT:-8080}:80"
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  mongo_data:

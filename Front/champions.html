@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Stats - Champions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="header-container">
+            <h1 class="logo">NYJ LOL STATS</h1>
+            <div class="header-actions">
+                <nav class="navbar">
+                    <a href="index.html" class="nav-item">Accueil</a>
+                    <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+                    <a href="champions.html" class="nav-item active">Champions</a>
+                </nav>
+                <div class="auth-nav" data-auth-nav></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="champions-container">
+            <div id="data-status" class="data-status" role="status" hidden></div>
+            <div class="champions-header">
+                <div>
+                    <h2>Statistiques des champions</h2>
+                    <span class="source-badge" id="champions-source">Chargement</span>
+                </div>
+                
+                <div class="role-filters">
+                    <button class="role-btn active" data-role="all">Tous</button>
+                    <button class="role-btn" data-role="top">Top</button>
+                    <button class="role-btn" data-role="jungle">Jungle</button>
+                    <button class="role-btn" data-role="mid">Mid</button>
+                    <button class="role-btn" data-role="adc">ADC</button>
+                    <button class="role-btn" data-role="support">Support</button>
+                </div>
+            </div>
+
+            <div class="champions-grid" id="champions-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 NYJ LoL Stats - Projet Universitaire de Fin d'Année</p>
+            <p class="footer-team">Développé avec passion par l'équipe NYJ</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

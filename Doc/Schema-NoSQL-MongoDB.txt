@@ -1,0 +1,98 @@
+=====================================================================
+SCHEMA NoSQL - MongoDB (Base : lol_nosql_db / Collection : matchs)
+=====================================================================
+
+1. PRESENTATION
+------------------------------------------------------------------
+La base MongoDB stocke l'historique brut des matchs issus de l'API
+Riot Games, dans une unique collection "matchs". Chaque document
+représente une partie jouée et embarque directement la liste de ses
+participants (modèle dénormalisé / "embedded documents").
+
+2. STRUCTURE D'UN DOCUMENT (exemple réel)
+------------------------------------------------------------------
+{
+  "_id": ObjectId("6a2f0fdd46fd4b01869df8a3"),
+  "matchId": "EUW1_001",
+  "region": "KR",
+  "gameMode": "CLASSIC",
+  "gameDuration": 1834,
+  "gameCreation": 1781121600,
+  "participants": [
+    {
+      "puuid": "puuid_faker",
+      "gameName": "Faker",
+      "championName": "Azir",
+      "role": "mid",
+      "teamId": 100,
+      "win": true,
+      "kills": 8,
+      "deaths": 2,
+      "assists": 11
+    },
+    {
+      "puuid": "puuid_caps",
+      "gameName": "Caps",
+      "championName": "Syndra",
+      "role": "mid",
+      "teamId": 200,
+      "win": false,
+      "kills": 5,
+      "deaths": 6,
+      "assists": 4
+    }
+  ]
+}
+
+3. DICTIONNAIRE DES CHAMPS
+------------------------------------------------------------------
+Champ (document racine)   | Type        | Description
+---------------------------|-------------|----------------------------------
+_id                         | ObjectId    | Identifiant interne MongoDB (auto)
+matchId                     | String      | Identifiant unique de la partie (API Riot)
+region                      | String      | Région du serveur de jeu (EUW, KR, NA, ...)
+gameMode                    | String      | Mode de jeu (CLASSIC, ARAM, ...)
+gameDuration                | Int32       | Durée de la partie en secondes
+gameCreation                | Int64       | Timestamp Unix de création de la partie
+participants                | Array<Doc>  | Tableau imbriqué des joueurs de la partie
+
+Champ (sous-document participants[]) | Type     | Description
+---------------------------------------|----------|----------------------------------
+puuid                                   | String   | Identifiant du joueur (FK logique
+                                        |          | vers invocateurs.puuid en SQL)
+gameName                                | String   | Pseudo en jeu du joueur
+championName                            | String   | Champion joué
+role                                    | String   | Rôle (top, jungle, mid, adc, support)
+teamId                                  | Int32    | Identifiant d'équipe (100 ou 200)
+win                                     | Boolean  | Victoire (true) ou défaite (false)
+kills / deaths / assists               | Int32    | Statistiques de la partie
+
+4. INDEX
+------------------------------------------------------------------
+- { matchId: 1 }                          UNIQUE   -> empêche les doublons de match
+- { "participants.puuid": 1, gameCreation: -1 }     -> historique d'un joueur,
+                                                        du plus récent au plus ancien
+- { "participants.championName": 1 }     -> agrégations par champion (winrate)
+
+5. JUSTIFICATION DU CHOIX NoSQL POUR CETTE ENTITE
+------------------------------------------------------------------
+Un match contient un nombre variable de participants (1 à 10+ selon le
+mode) et de statistiques par joueur. Modéliser ceci en relationnel
+demanderait au minimum 2 tables (matchs + participants) avec une
+jointure systématique pour reconstituer un historique. Le document
+JSON imbriqué permet de :
+  - lire un match complet en une seule requête (pas de jointure) ;
+  - s'adapter facilement à l'ajout de nouveaux champs Riot (objets,
+    runes, items...) sans migration de schéma ;
+  - exploiter le framework d'agrégation ($unwind, $group) pour calculer
+    des statistiques transverses (winrate par champion) directement
+    sur la structure imbriquée.
+
+Voir Section 10.2 du dossier technique pour la comparaison complète
+SQL vs NoSQL et les alternatives écartées (Redis, Neo4j).
+
+6. JEU DE DONNEES ACTUEL
+------------------------------------------------------------------
+24 documents (matchs) chargés via database/init-mongo.js, couvrant
+les régions EUW, KR, NA, EUNE, JP, BR et LAN, et référençant les
+puuid présents dans la table SQL "invocateurs".

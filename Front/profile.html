@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Stats - Profil Joueur</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="header-container">
+            <h1 class="logo">NYJ LOL STATS</h1>
+            <div class="header-actions">
+                <nav class="navbar">
+                    <a href="index.html" class="nav-item">Accueil</a>
+                    <a href="leaderboard.html" class="nav-item">Leaderboard</a>
+                    <a href="champions.html" class="nav-item">Champions</a>
+                </nav>
+                <div class="auth-nav" data-auth-nav></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="profile-container">
+            <div id="data-status" class="data-status" role="status" hidden></div>
+
+            <section id="profile-error" class="profile-error dashboard-card" hidden>
+                <span class="profile-error-code" aria-hidden="true">404</span>
+                <h2 id="profile-error-title">Joueur introuvable</h2>
+                <p id="profile-error-message"></p>
+                <a class="profile-error-link" href="index.html">Revenir à la recherche</a>
+            </section>
+
+            <div id="profile-content">
+            <div class="profile-header dashboard-card">
+                <div class="profile-avatar">
+                    <div class="avatar-placeholder" id="profile-avatar">
+                        <span id="profile-initials">?</span>
+                    </div>
+                    <span class="player-level" id="profile-level">-</span>
+                </div>
+                <div class="profile-info">
+                    <div class="profile-title-row">
+                        <h2>
+                            <span id="display-player-name">Nom du joueur</span>
+                            <span class="profile-tag" id="display-player-tag"></span>
+                        </h2>
+                        <span class="source-badge" id="profile-source">Chargement</span>
+                    </div>
+                    <p class="ladder-rank">
+                        Classement <span id="profile-rank-position">-</span>
+                        (<span id="profile-region">-</span>)
+                    </p>
+                    <div class="profile-actions">
+                        <button class="update-btn" id="refresh-profile" type="button">Actualiser</button>
+                        <button
+                            class="favorite-btn"
+                            id="favorite-toggle"
+                            type="button"
+                            aria-pressed="false"
+                            hidden
+                        >
+                            Ajouter aux favoris
+                        </button>
+                    </div>
+                    <p id="favorite-message" class="favorite-message" role="status" hidden></p>
+                </div>
+            </div>
+
+            <div class="profile-stats-grid">
+                <article class="dashboard-card ranked-card">
+                    <h3>Classé Solo/Duo</h3>
+                    <div class="ranked-info">
+                        <div class="tier-icon-placeholder"></div>
+                        <div class="ranked-details">
+                            <h4 class="tier-name" id="solo-tier">Non classé</h4>
+                            <p class="lp-amount" id="solo-lp">0 LP</p>
+                            <p class="stat-caption">Données relationnelles MySQL</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="dashboard-card ranked-card flex-card">
+                    <h3>Classé Flex</h3>
+                    <div class="ranked-info">
+                        <div class="tier-icon-placeholder"></div>
+                        <div class="ranked-details">
+                            <h4 class="tier-name" id="flex-tier">Non classé</h4>
+                            <p class="lp-amount" id="flex-lp">0 LP</p>
+                            <p class="stat-caption">Données relationnelles MySQL</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="match-history-container">
+                <div class="section-title-row">
+                    <h3>Historique récent</h3>
+                    <span class="source-badge" id="matches-source">Chargement</span>
+                </div>
+                <div id="match-history-list"></div>
+            </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 NYJ LoL Stats - Projet Universitaire de Fin d'Année</p>
+            <p class="footer-team">Développé avec passion par l'équipe NYJ</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
